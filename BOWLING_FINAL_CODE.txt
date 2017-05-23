@@ -1,0 +1,892 @@
+#!/bin/ksh
+
+
+
+while [ "$NAME" = "" ]
+do
+
+ echo "Please Enter Your Name"
+ read NAME
+done
+    echo "$NAME | grep '[0-9]' >/dev/null;
+              
+   
+while [ $? -eq 0 ]
+do
+  echo "please enter alphabet"
+  read NAME
+  echo $NAME | grep '[0-9]' >/dev/null;
+done
+ echo "Hello $NAME"
+
+
+
+echo "Lets Play the Game"
+echo "Its your turn now"
+let CURRENTFRAME=1
+let FRAMESCORE=0
+
+#ARRAY NAMED score WHICH STORE DIFFERENT 21 VALUES OF 10 FRAME
+
+set -a score
+for i in 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+do
+
+#LOOP WILL EXECUTE TILL 9TH FRAME AND COLLECT USER INPUTS which will get stored in ${score[@]}
+
+while [ $CURRENTFRAME -le 9 ]
+do
+        echo this is frame $CURRENTFRAME
+        echo   "Enter score for 1st spin"
+		read SPIN1
+
+
+		while [ "$SPIN1" = "" ]
+		do
+
+		echo "Enter score for 1st spin"
+		read SPIN1
+		done
+			 echo $SPIN1 | grep '[A-Za-z]' >/dev/null; 
+              
+		while [ $? -eq 0 ]
+		do
+		echo "please enter digit"
+		read SPIN1
+		echo $SPIN1 | grep '[A-Za-z]' >/dev/null;
+done
+
+if [ "$SPIN1" -eq 10 ]
+        then
+        echo "ITS A STRIKE"
+
+        (( CURRENTFRAME+=1 ))
+                 score[i]=$SPIN1
+                (( i=i+1 ))
+                score[i]=0
+                (( i=i+1 ))
+
+elif [ "$SPIN1" -lt 10 ]
+then
+
+
+        echo   "Enter score for 2st spin"
+		read SPIN2
+
+
+		while [ "$SPIN2" = "" ]
+		do
+
+		echo "Enter score for 2nd spin"
+		read SPIN2
+		done
+			 echo $SPIN2 | grep '[A-Za-z]' >/dev/null; 
+              
+		while [ $? -eq 0 ]
+		do
+		echo "please enter digit"
+		read SPIN2
+		echo $SPIN2 | grep '[A-Za-z]' >/dev/null;
+		done
+                let SUM1=$SPIN1+$SPIN2
+                if [ "$SUM1" -eq 10 ]
+                then
+                        echo "ITS A Spare"
+
+                        (( CURRENTFRAME+=1 ))
+                                                score[i]=$SPIN1
+                        (( i=i+1 ))
+                                                score[i]=$SPIN2
+                        (( i=i+1 ))
+
+
+                elif [ "$SUM1" -gt 10 ]
+                                then
+                                        while [ "$SUM1" -gt 10 ]
+                                        do
+                                        echo "invalid input"
+                                        echo "Enter score of second of frame"
+                                        read SPIN2
+                                if echo "${SPIN2}" | grep '[A-Za-z]' >/dev/null; then
+                                                                echo 'Invalid input'
+                                exit
+                                fi
+                                while [ "$SPIN2" = "" ]
+                                do
+                                echo "Enter score for second spin:"
+                                read SPIN2
+                                if echo "${SPIN2}" | grep '[A-Za-z]' >/dev/null; then
+                                                                echo 'Invalid input'
+                                exit
+                                fi
+                                done
+                                let SUM1=$SPIN1+$SPIN2
+                                                                let REF=10-$SPIN1
+                                    if [ "$SUM1" -eq 10 ]
+                                        then
+                                        echo "Its a spare"
+                                        score[i]=$SPIN1
+                                         (( i=i+1 ))
+                                         score[i]=$SPIN2
+                                         (( i=i+1 ))
+
+
+                                    elif [ "$SPIN2" -le "$REF" ]
+                                         then
+                                         let SUM1=$SPIN2+$SPIN1
+                                          echo "Total Score for First Frame="$SUM1
+                                           score[i]=$SPIN1
+                                         (( i=i+1 ))
+                                         score[i]=$SPIN2
+                                         (( i=i+1 ))
+                                     fi
+                                        done
+                                                (( CURRENTFRAME+=1 ))
+
+                else
+            echo "Total Score for First Frame="$SUM1
+
+            (( CURRENTFRAME+=1 ))
+                        score[i]=$SPIN1
+            (( i=i+1 ))
+                        score[i]=$SPIN2
+            (( i=i+1 ))
+                fi
+
+elif [ "$SPIN1" -gt 10 ]
+then
+    while [ "$SPIN1" -gt 10 ]
+    do
+                echo "invalid input"
+                echo "Enter score of first of frame"
+                                read SPIN1
+                if echo "${SPIN1}" | grep '[A-Za-z]' >/dev/null; then
+                echo 'Invalid input'
+                exit
+                                fi
+                while [ "$SPIN1" = "" ]
+                do
+                echo "Enter score for second spin:"
+                                read SPIN1
+                if echo "${SPIN1}" | grep '[A-Za-z]' >/dev/null; then
+                                echo 'Invalid input'
+                        exit
+                        fi
+                        done
+                        if [ "$SPIN1" -eq 10 ]
+                        then
+                                echo "ITS A STRIKE"
+
+                                (( CURRENTFRAME+=1 ))
+                                                                score[i]=$SPIN1
+                                 (( i=i+1 ))
+
+
+
+                        elif [ "$SPIN1" -lt 10 ]
+                         then
+                                echo "Enter score for second spin"
+                                read SPIN2
+                                                                if echo "${SPIN2}" | grep '[A-Za-z]' >/dev/null; then
+                                                                echo 'Invalid input'
+                                exit
+                                fi
+                                while [ "$SPIN2" = "" ]
+                                do
+                                        echo "Enter score for second spin:"
+                                        read SPIN2
+                                        if echo "${SPIN2}" | grep '[A-Za-z]' >/dev/null; then
+                                        echo 'Invalid input'
+                                        exit
+                                        fi
+                                done
+                                let SUM1=$SPIN1+$SPIN2
+                                        if [ "$SUM1" -eq 10 ]
+                                        then
+                                                echo "ITS A Spare"
+
+                                                 (( CURRENTFRAME+=1 ))
+                                                                                                 score[i]=$SPIN1
+                                                  (( i=i+1 ))
+                                                                                                 score[i]=$SPIN2
+                                                  (( i=i+1 ))
+
+                                        elif [ "$SUM1" -gt 10 ]
+                                                                                then
+                                                                                        while [ "$SUM1" -gt 10 ]
+                                                                                        do
+                                                                                        echo "invalid input"
+                                                                                        echo "Enter score of second of frame\n"
+                                                                                        read SPIN2
+                                                        if echo "${SPIN2}" | grep '[A-Za-z]' >/dev/null; then
+                                                        echo 'Invalid input'
+                                                        exit
+                                                        fi
+                                                        while [ "$SPIN2" = "" ]
+                                                        do
+                                                        echo "Enter score for second spin:"
+                                                        read SPIN2
+                                                        if echo "${SPIN2}" | grep '[A-Za-z]' >/dev/null; then
+                                                        echo 'Invalid input'
+                                                        exit
+                                                        fi
+                                                        done
+                                                                                                                let REF=10-$SPIN1
+                                                                                if [ "$SPIN2" -le "$REF" ]
+                                                                                then
+                                                                                        let SUM1=$SPIN2+$SPIN1
+                                                                                        echo "Total Score for First Frame="$SUM1
+                                                                                        score[i]=$SPIN1
+                                         (( i=i+1 ))
+                                                                                        score[i]=$SPIN2
+                                         (( i=i+1 ))
+
+                                                                                fi
+                        done
+                            (( CURRENTFRAME+=1 ))
+
+
+              else
+                        echo "Total Score for First Frame="$SUM1
+
+                        (( CURRENTFRAME+=1 ))
+                                                score[i]=$SPIN1
+                        (( i=i+1 ))
+                                                score[i]=$SPIN2
+                       (( i=i+1 ))
+                            fi
+                        fi
+                        done
+
+
+
+fi
+done
+done
+
+#LOGIC FOR 3 BALLS OF 10TH FRAME
+
+ echo "this is 10th frame"
+ echo "enter value for 1st ball"
+ read B101
+                while [ "$B101" = "" ]
+                do
+                echo "Invalid input"
+                echo "enter value for 1nd ball"
+                read B101
+                done
+ if [ "$B101" -eq 10 ]
+ then
+        echo "enter value for 2nd ball"
+        read B102
+                 if [ "$B102" -eq 10 ]
+                then
+                echo "enter value for 3rd ball"
+                read B103
+                     if [ "$B103" -eq 10 ]
+                         then
+                         let FS9=$B101+$B102+$B103
+                         let FB91=$B101
+                          let FB92=$B102
+                           let FS93=$B103
+
+                         elif [ "$B103" -lt 10 ]
+                         then
+                     let FS9=$B101+$B102+$B103
+                         let FB91=$B101
+                          let FB92=$B102
+                           let FS93=$B103
+
+                        fi
+                elif [ "B102" -lt 10 ]
+                then
+                echo "enter value for 3rd ball"
+                read B103
+                                if [ "$B103" -lt 10 ]
+                                then
+                                let FS9=$B101+$B102+$B103
+                                let FB91=$B101
+                                let FB92=$B102
+                                let FS93=$B103
+
+                                fi
+                fi
+elif [ "$B101" -lt 10 ]
+then
+                echo "enter value for 2nd ball"
+                read B102
+                let ref=10-$B101
+                while [ "$B102" = "" ]
+                do
+                echo "Invalid input"
+                echo "enter value for 2nd ball"
+                read B102
+                done
+
+                if [ "$B102" -gt "$ref" ]
+                then
+                        echo "Invalid input"
+
+                elif [ "$B102" -le "$ref" ]
+                then
+                        if [ "(($B101+$B102))" -eq 10 ]
+                          then
+                                echo "enter value for 3rd ball"
+                                read B103
+                                if [ "$B103" -lt 10 ]
+                                then
+                                let FS9=$B101+$B102+$B103
+                                let FB91=$B101
+                                let FB92=$B102
+                                let FS93=$B103
+                                elif [ "$B103" -eq 10 ]
+                                then
+                                let FS9=$B101+$B102+$B103
+                                let FB91=$B101
+                                let FB92=$B102
+                                let FS93=$B103
+
+                                fi
+                        elif [ "(($B101+$B102))" -lt 10 ]
+                        then
+                        let FS9=$B101+$B102
+                                let FB91=$B101
+                           let FB92=$B102
+
+
+                        fi
+        fi
+fi
+
+
+
+
+
+#PRINT SCORE OF ALL THE FRAMES
+
+echo ${score[@]} $FB91 $FB92 $FS93
+
+#STORE VALUES OF ARRAY IN DIFFERENT VARIABLE
+#B11 MEANS 1ST FRAME 1ST BALL
+#B12 MEANS 1ST FRAME 2ND BALL
+#AND SO ON.....
+let B11=${score[0]}
+let B12=${score[1]}
+let B21=${score[2]}
+let B22=${score[3]}
+let B31=${score[4]}
+let B32=${score[5]}
+let B41=${score[6]}
+let B42=${score[7]}
+let B51=${score[8]}
+let B52=${score[9]}
+let B61=${score[10]}
+let B62=${score[11]}
+let B71=${score[12]}
+let B72=${score[13]}
+let B81=${score[14]}
+let B82=${score[15]}
+let B91=${score[16]}
+let B92=${score[17]}
+
+
+
+
+if [ "$B11" -eq 10 ]
+ then
+
+      if [ "$B21" -eq 10 ]
+          then
+
+                if [ "$B31" -eq 10 ]
+                then
+                        let  FS0=$B11+$B21+$B31
+                        let CS0=$FS0
+
+                elif [ "$B31" -lt 10 ]
+                then
+                        let  FS0=$B11+$B21+$B31
+                        let CS0=$FS0
+                fi
+
+    elif [ "$B21" -lt 10 ]
+        then
+                if [ "$B22" -lt 10 ]
+                then
+                        let  FS0=$B11+$B21+$B22
+                        let CS0=$FS0
+
+                fi
+        fi
+elif [ "$B11" -lt 10 ]
+ then
+    if [ "$B12" -lt 10 ]
+        then
+         let sum=$B11+$B12
+                if [ "$sum" -eq 10 ]
+                then
+                        let  FS0=$B11+$B12+$B21
+                        let CS0=$FS0
+                else
+                let FS0=$B11+$B12
+                let CS0=$FS0
+                fi
+
+
+        fi
+
+fi
+
+echo "1st frame score" $FS0
+
+if [ "$B21" -eq 10 ]
+ then
+
+      if [ "$B31" -eq 10 ]
+          then
+
+                if [ "$B41" -eq 10 ]
+                then
+                        let  FS1=$B21+$B31+$B41
+                        let CS1=$FS0+$FS1
+
+                elif [ "$B41" -lt 10 ]
+                then
+                        let  FS1=$B21+$B31+$B41
+                        let CS1=$FS0+$FS1
+                fi
+
+    elif [ "$B31" -lt 10 ]
+        then
+                if [ "$B32" -lt 10 ]
+                then
+                        let  FS1=$B21+$B31+$B32
+                        let CS1=$FS0+$FS1
+
+                fi
+        fi
+
+elif [ "$B21" -lt 10 ]
+ then
+    if [ "$B22" -lt 10 ]
+        then
+         let sum1=$B21+$B22
+                if [ "$sum1" -eq 10 ]
+                then
+                        let  FS1=$B21+$B22+$B31
+                        let CS1=$FS0+$FS1
+                else
+                let FS1=$B21+$B22
+                let CS1=$FS0+$FS1
+                fi
+
+
+        fi
+
+fi
+
+echo "2st frame score" $FS1
+echo "2st cumilative frame score" $CS1
+
+if [ "$B31" -eq 10 ]
+ then
+
+      if [ "$B41" -eq 10 ]
+          then
+
+                if [ "$B51" -eq 10 ]
+                then
+                        let  FS2=$B51+$B31+$B41
+                        let CS2=$FS0+$FS1+$FS2
+
+                elif [ "$B51" -lt 10 ]
+                then
+                        let  FS2=$B51+$B31+$B41
+                        let CS2=$FS0+$FS1+$FS2
+                fi
+
+    elif [ "$B41" -lt 10 ]
+        then
+                if [ "$B42" -lt 10 ]
+                then
+                        let  FS2=$B31+$B41+$B42
+                        let CS2=$FS0+$FS1+$FS2
+
+                fi
+        fi
+
+elif [ "$B31" -lt 10 ]
+ then
+    if [ "$B32" -lt 10 ]
+        then
+         let sum2=$B31+$B32
+                if [ "$sum2" -eq 10 ]
+                then
+                        let  FS2=$B31+$B32+$B41
+                        let CS2=$FS0+$FS1+$FS2
+                else
+                let FS2=$B31+$B32
+                let CS2=$FS0+$FS1+$FS2
+                fi
+
+
+        fi
+
+fi
+
+echo "3rd frame score" $FS2
+echo "3rd cumilative frame score" $CS2
+
+if [ "$B41" -eq 10 ]
+ then
+
+      if [ "$B51" -eq 10 ]
+          then
+
+                if [ "$B61" -eq 10 ]
+                then
+                        let  FS3=$B61+$B41+$B51
+                        let CS3=$FS0+$FS1+$FS2+$FS3
+
+                elif [ "$B61" -lt 10 ]
+                then
+                        let  FS3=$B61+$B41+$B51
+                        let CS3=$FS0+$FS1+$FS2+$FS3
+                fi
+
+    elif [ "$B51" -lt 10 ]
+        then
+                if [ "$B52" -lt 10 ]
+                then
+                        let  FS3=$B52+$B41+$B51
+                        let CS3=$FS0+$FS1+$FS2+$FS3
+
+                fi
+        fi
+
+elif [ "$B41" -lt 10 ]
+ then
+    if [ "$B42" -lt 10 ]
+        then
+         let sum3=$B41+$B42
+                if [ "$sum3" -eq 10 ]
+                then
+                        let  FS3=$B41+$B42+$B51
+                        let CS3=$FS0+$FS1+$FS2+$FS3
+                else
+                let FS3=$B41+$B42
+                let CS3=$FS0+$FS1+$FS2+$FS3
+                fi
+
+
+        fi
+
+fi
+
+echo "4th frame score" $FS3
+echo "4th cumilative frame score" $CS3
+
+if [ "$B51" -eq 10 ]
+ then
+
+      if [ "$B61" -eq 10 ]
+          then
+
+                if [ "$B71" -eq 10 ]
+                then
+                        let  FS4=$B71+$B51+$B61
+                        let CS4=$FS0+$FS1+$FS2+$FS3+$FS4
+
+                elif [ "$B71" -lt 10 ]
+                then
+                        let  FS4=$B71+$B51+$B61
+                        let CS4=$FS0+$FS1+$FS2+$FS3+$FS4
+                fi
+
+    elif [ "$B61" -lt 10 ]
+        then
+                if [ "$B62" -lt 10 ]
+                then
+                        let  FS4=$B61+$B62+$B51
+                        let CS4=$FS0+$FS1+$FS2+$FS3+$FS4
+
+                fi
+        fi
+
+elif [ "$B51" -lt 10 ]
+ then
+    if [ "$B52" -lt 10 ]
+        then
+         let sum4=$B51+$B52
+                if [ "$sum4" -eq 10 ]
+                then
+                        let  FS4=$B51+$B52+$B61
+                        let CS4=$FS0+$FS1+$FS2+$FS3+$FS4
+                else
+                let FS4=$B51+$B52
+                let FS4=$B51+$B52
+
+                fi
+
+
+        fi
+
+fi
+
+echo "5th frame score" $FS4
+echo "5th cumilative frame score" $CS4
+
+if [ "$B61" -eq 10 ]
+ then
+
+      if [ "$B71" -eq 10 ]
+          then
+
+                if [ "$B81" -eq 10 ]
+                then
+                        let  FS5=$B61+$B71+$B81
+                        let CS5=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5
+
+                elif [ "$B81" -lt 10 ]
+                then
+                        let  FS5=$B61+$B71+$B81
+                        let CS5=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5
+                fi
+
+    elif [ "$B71" -lt 10 ]
+        then
+                if [ "$B72" -lt 10 ]
+                then
+                        let  FS5=$B71+$B72+$B61
+                        let CS5=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5
+
+                fi
+        fi
+
+elif [ "$B61" -lt 10 ]
+ then
+    if [ "$B62" -lt 10 ]
+        then
+         let sum5=$B61+$B62
+                if [ "$sum5" -eq 10 ]
+                then
+                        let  FS5=$B61+$B62+$B71
+                        let CS5=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5
+                else
+                let FS5=$B61+$B62
+                let CS5=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5
+                fi
+
+
+        fi
+
+fi
+
+echo "6th frame score" $FS5
+echo "6th cumilative frame score" $CS5
+
+if [ "$B71" -eq 10 ]
+ then
+
+      if [ "$B81" -eq 10 ]
+          then
+
+                if [ "$B91" -eq 10 ]
+                then
+                        let  FS6=$B71+$B81+$B91
+                        let CS6=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5+$FS6
+
+                elif [ "$B91" -lt 10 ]
+                then
+                        let  FS6=$B71+$B81+$B91
+                        let CS6=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5+$FS6
+                fi
+
+    elif [ "$B81" -lt 10 ]
+        then
+                if [ "$B82" -lt 10 ]
+                then
+                        let  FS6=$B81+$B82+$B71
+                        let CS6=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5+$FS6
+
+                fi
+        fi
+
+elif [ "$B71" -lt 10 ]
+ then
+    if [ "$B72" -lt 10 ]
+        then
+         let sum6=$B71+$B72
+                if [ "$sum6" -eq 10 ]
+                then
+                        let  FS6=$B71+$B72+$B81
+                        let CS6=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5+$FS6
+                else
+                let FS6=$B71+$B72
+                let CS6=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5+$FS6
+                fi
+
+
+        fi
+
+fi
+
+echo "7th frame score" $FS6
+echo "7th cumilative frame score" $CS6
+
+
+if [ "$B81" -eq 10 ]
+ then
+
+      if [ "$B91" -eq 10 ]
+          then
+
+                if [ "$B101" -eq 10 ]
+                then
+                        let  FS7=$B81+$B91+$B101
+                        let CS7=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5+$FS6+$FS7
+
+                elif [ "$B101" -lt 10 ]
+                then
+                        let  FS7=$B81+$B91+$B101
+                        let CS7=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5+$FS6+$FS7
+                fi
+
+    elif [ "$B91" -lt 10 ]
+        then
+                if [ "$B92" -lt 10 ]
+                then
+                        let  FS7=$B91+$B92+$B81
+                        let CS7=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5+$FS6+$FS7
+
+                fi
+        fi
+
+elif [ "$B81" -lt 10 ]
+ then
+    if [ "$B82" -lt 10 ]
+        then
+         let sum7=$B81+$B82
+                if [ "$sum7" -eq 10 ]
+                then
+                        let  FS7=$B81+$B82+$B91
+                        let CS7=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5+$FS6+$FS7
+                else
+                let FS7=$B81+$B82
+                let CS7=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5+$FS6+$FS7
+                fi
+
+
+        fi
+
+fi
+
+echo "8th frame score" $FS7
+echo "8th cumilative frame score" $CS7
+
+if [ "$B91" -eq 10 ]
+ then
+
+      if [ "$B101" -eq 10 ]
+          then
+
+                if [ "$B102" -eq 10 ]
+                then
+                        let  FS8=$B91+$B101+$B102
+                        let CS8=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5+$FS6+$FS7+$FS8
+
+                elif [ "$B101" -lt 10 ]
+                then
+                        let  FS8=$B91+$B101+$B102
+                        let CS8=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5+$FS6+$FS7+$FS8
+                fi
+
+    elif [ "$B101" -lt 10 ]
+        then
+                if [ "$B102" -lt 10 ]
+                then
+                        let  FS8=$B91+$B101+$B102
+                        let CS8=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5+$FS6+$FS7+$FS8
+
+                fi
+        fi
+
+elif [ "$B91" -lt 10 ]
+ then
+    if [ "$B92" -lt 10 ]
+        then
+         let sum8=$B91+$B92
+                if [ "$sum8" -eq 10 ]
+                then
+                        let  FS8=$B91+$B92+$B101
+                        let CS8=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5+$FS6+$FS7+$FS8
+                else
+                let FS8=$B91+$B92
+                let CS8=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5+$FS6+$FS7+$FS8
+                fi
+
+
+        fi
+
+fi
+
+echo "9th frame score" $FS8
+echo "9th cumilative frame score" $CS8
+
+
+ if [ "$B101" -eq 10 ]
+ then
+                 if [ "$B102" -eq 10 ]
+                then
+                     if [ "$B103" -eq 10 ]
+                         then
+                         let FS9=$B101+$B102+$B103
+                         let CS9=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5+$FS6+$FS7+$FS8+$FS9
+
+                         elif [ "$B103" -lt 10 ]
+                         then
+                     let FS9=$B101+$B102+$B103
+                          let CS9=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5+$FS6+$FS7+$FS8+$FS9
+                        fi
+                elif [ "B102" -lt 10 ]
+                then
+                                if [ "$B103" -lt 10 ]
+                                then
+                                let FS9=$B101+$B102+$B103
+                                 let CS9=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5+$FS6+$FS7+$FS8+$FS9
+                                fi
+                fi
+elif [ "$B101" -lt 10 ]
+then
+                let ref=10-$B101
+
+
+
+                if [ "$B102" -le "$ref" ]
+                then
+                        if [ "(($B101+$B102))" -eq 10 ]
+                          then
+
+                                if [ "$B103" -lt 10 ]
+                                then
+                                let FS9=$B101+$B102+$B103
+                                 let CS9=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5+$FS6+$FS7+$FS8+$FS9
+
+                                elif [ "$B103" -eq 10 ]
+                                 then
+                                 let FS9=$B101+$B102+$B103
+                                 let CS9=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5+$FS6+$FS7+$FS8+$FS9
+                                fi
+                        elif [ "(($B101+$B102))" -lt 10 ]
+                        then
+                        let FS9=$B101+$B102
+                         let CS9=$FS0+$FS1+$FS2+$FS3+$FS4+$FS5+$FS6+$FS7+$FS8+$FS9
+                        fi
+        fi
+fi
+
+
+echo "10th frame score" $FS9
+echo "10th cumilative frame score" $CS9
+
+_
